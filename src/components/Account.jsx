@@ -1,188 +1,145 @@
 import { useState } from "react";
-import { logout, update } from "../services/fetches";
+import { logout, update, handleUpdate, handleChange, disableAccount } from "../services/fetches";
 import Header from "./Header";
 import Footer from "./Footer";
-import { handleUpdate } from "../services/fetches";
-import { handleChange } from "../services/fetches";
-import { disableAccount } from "../services/fetches";
+
 export default function Account() {
-    const accountData = JSON.parse(localStorage.getItem('account2')) || {};
-    const user = accountData.user || {};
+  const accountData = JSON.parse(localStorage.getItem("account2")) || {};
+  const user = accountData.user || {};
 
-    const [formData, setFormData] = useState({
-        name: user.name || '',
-        lastname: user.lastname || '',
-        email: user.email || '',
-        dni: user.dni || '',
-        phone: user.phone || '',
-        password: '',
-        password_confirmation: ''
-    });
+  const [formData, setFormData] = useState({
+    name: user.name || "",
+    lastname: user.lastname || "",
+    email: user.email || "",
+    dni: user.dni || "",
+    phone: user.phone || "",
+    password: "",
+    password_confirmation: "",
+  });
 
-    const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(null);
 
-    const confirmDelete = (e) => {
-        e.preventDefault();
-        const confirmacion = window.confirm(
-            "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y perderás todos tus datos en Baleartrek."
-        );
-        if (confirmacion) {
-            disableAccount(e);
-        }
-    };
-    return (
-        <div className="min-h-screen flex flex-col bg-slate-50">
-            <Header />
+  const confirmDelete = (e) => {
+    e.preventDefault();
+    if (window.confirm("⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible.")) {
+      disableAccount(e);
+    }
+  };
 
-            <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    
-                    {/* Columna Izquierda: Información de Perfil */}
-                    <div className="md:col-span-1">
-                        <div className="bg-white border-2 border-gray-800 p-6 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <div className="w-20 h-20 bg-emerald-100 border-2 border-gray-800 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto md:mx-0">
-                                👤
-                            </div>
-                            <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Mi Perfil</h2>
-                            <p className="text-sm font-bold text-emerald-600 mb-4 tracking-widest uppercase">{user.role || 'Senderista'}</p>
-                            
-                            <div className="space-y-2 border-t-2 border-gray-100 pt-4">
-                                <p className="text-xs font-bold text-gray-400 uppercase">Nombre Completo</p>
-                                <p className="font-bold text-gray-800">{user.name} {user.lastname}</p>
-                                
-                                <p className="text-xs font-bold text-gray-400 uppercase mt-2">DNI</p>
-                                <p className="font-mono text-sm">{user.dni}</p>
-                            </div>
+  const inputClass = "w-full px-4 py-3 bg-transparent border border-gray-700 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 transition-colors";
+  const labelClass = "block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wide";
 
-                            <button 
-                                onClick={logout}
-                                className="w-full mt-8 bg-red-100 text-red-600 font-bold py-2 border-2 border-red-600 rounded shadow-[3px_3px_0px_0px_rgba(220,38,38,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-                            >
-                                Cerrar Sesión
-                            </button>
-                        </div>
-                    </div>
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <Header />
 
-                    {/* Columna Derecha: Formulario de Actualización */}
-                    <div className="md:col-span-2">
-                        <div className="bg-white border-2 border-gray-800 p-8 rounded-lg shadow-[6px_6px_0px_0px_rgba(31,41,55,1)]">
-                            <h1 className="text-2xl font-black text-gray-900 mb-6 uppercase">Actualizar Datos</h1>
-                            
-                            <form onSubmit={(e) => handleUpdate(e, formData, setStatus, update)} className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-black uppercase text-gray-700">Nombre</label>
-                                        <input
-                                            className="p-3 border-2 border-gray-800 rounded font-medium focus:ring-2 focus:ring-emerald-400 outline-none"
-                                            type="text"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-black uppercase text-gray-700">Apellidos</label>
-                                        <input
-                                            className="p-3 border-2 border-gray-800 rounded font-medium focus:ring-2 focus:ring-emerald-400 outline-none"
-                                            type="text"
-                                            name="lastname"
-                                            value={formData.lastname}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-xs font-black uppercase text-gray-700">Email</label>
-                                    <input
-                                        className="p-3 border-2 border-gray-800 rounded font-medium outline-none"
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={(e) => handleChange(e, setFormData, formData)}
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-black uppercase text-gray-700">DNI</label>
-                                        <input
-                                            className="p-3 border-2 border-gray-800 rounded font-medium outline-none"
-                                            type="text"
-                                            name="dni"
-                                            value={formData.dni}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-black uppercase text-gray-700">Teléfono</label>
-                                        <input
-                                            className="p-3 border-2 border-gray-800 rounded font-medium outline-none"
-                                            type="text"
-                                            name="phone"
-                                            value={formData.phone}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="pt-4 border-t-2 border-gray-800">
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest">Cambiar Contraseña (opcional)</p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <input
-                                            placeholder="Nueva contraseña"
-                                            className="p-3 border-2 border-gray-800 rounded font-medium outline-none"
-                                            type="password"
-                                            name="password"
-                                            value={formData.password}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                        <input
-                                            placeholder="Confirmar contraseña"
-                                            className="p-3 border-2 border-gray-800 rounded font-medium outline-none"
-                                            type="password"
-                                            name="password_confirmation"
-                                            value={formData.password_confirmation}
-                                            onChange={(e) => handleChange(e, setFormData, formData)}
-                                        />
-                                    </div>
-                                </div>
-
-                                {status === 'success' && (
-                                    <div className="p-3 bg-emerald-100 border-2 border-emerald-500 text-emerald-700 font-bold rounded">
-                                        ✅ Perfil actualizado correctamente
-                                    </div>
-                                )}
-                                {status === 'error' && (
-                                    <div className="p-3 bg-red-100 border-2 border-red-500 text-red-700 font-bold rounded">
-                                        ❌ Error al actualizar. Revisa los datos.
-                                    </div>
-                                )}
-
-                                <button 
-                                    type="submit"
-                                    className="w-full bg-emerald-500 text-black font-black py-4 border-2 border-gray-800 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase tracking-widest"
-                                >
-                                    Guardar Cambios
-                                </button>
-                            </form>
-
-                           <div className="mt-12 pt-8 border-t-4 border-red-100">
-                                <h3 className="text-red-600 font-black uppercase text-sm mb-4">Zona de Peligro</h3>
-                                <button 
-                                    onClick={confirmDelete}
-                                    className="w-full bg-red-600 text-black font-black py-4 border-2 border-gray-800 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-red-700 hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase tracking-widest"
-                                >
-                                    Borrar Cuenta Definitivamente
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            <Footer />
+      <div className="lg:ml-64 xl:ml-72 pe-50 min-h-screen border-x border-gray-800">
+        {/* Page Header */}
+        <div className="sticky top-0 lg:top-0 mt-14 lg:mt-0 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-3 z-10 flex items-center gap-4">
+          <button onClick={() => window.history.back()} className="p-2 rounded-full hover:bg-gray-900 transition-colors">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          </button>
+          <div>
+            <h1 className="text-xl font-black text-white leading-none">Mi Cuenta</h1>
+            <p className="text-gray-500 text-xs mt-0.5">{user.name} {user.lastname}</p>
+          </div>
         </div>
-    );
+
+        {/* Profile Banner */}
+        <div className="relative">
+          <div className="h-32 bg-gradient-to-r from-emerald-900/60 to-gray-900" />
+          <div className="px-4 pb-4">
+            <div className="relative -mt-10 flex items-end justify-between mb-4">
+              <div className="w-20 h-20 rounded-full bg-gray-700 border-4 border-black flex items-center justify-center text-3xl">👤</div>
+              <button
+                onClick={logout}
+                className="px-5 py-2 border border-gray-600 text-white text-sm font-bold rounded-full hover:bg-gray-900 transition-colors"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+            <h2 className="text-xl font-black text-white">{user.name} {user.lastname}</h2>
+            <p className="text-gray-500 text-sm">@baleartrek · <span className="text-emerald-500">{user.role || "Senderista"}</span></p>
+            <p className="text-gray-500 text-sm mt-1 font-mono">{user.dni}</p>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="border-b border-gray-800 px-4 pb-0">
+          <div className="flex">
+            <span className="py-3 px-4 text-sm font-bold text-white border-b-2 border-emerald-500">Editar perfil</span>
+          </div>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={(e) => handleUpdate(e, formData, setStatus, update)} className="px-4 py-6 space-y-5">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Nombre</label>
+              <input className={inputClass} type="text" name="name" value={formData.name} onChange={(e) => handleChange(e, setFormData, formData)} />
+            </div>
+            <div>
+              <label className={labelClass}>Apellidos</label>
+              <input className={inputClass} type="text" name="lastname" value={formData.lastname} onChange={(e) => handleChange(e, setFormData, formData)} />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClass}>Email</label>
+            <input className={inputClass} type="email" name="email" value={formData.email} onChange={(e) => handleChange(e, setFormData, formData)} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>DNI</label>
+              <input className={inputClass} type="text" name="dni" value={formData.dni} onChange={(e) => handleChange(e, setFormData, formData)} />
+            </div>
+            <div>
+              <label className={labelClass}>Teléfono</label>
+              <input className={inputClass} type="text" name="phone" value={formData.phone} onChange={(e) => handleChange(e, setFormData, formData)} />
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-gray-800">
+            <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-4">Cambiar contraseña (opcional)</p>
+            <div className="grid grid-cols-2 gap-4">
+              <input className={inputClass} placeholder="Nueva contraseña" type="password" name="password" value={formData.password} onChange={(e) => handleChange(e, setFormData, formData)} />
+              <input className={inputClass} placeholder="Confirmar" type="password" name="password_confirmation" value={formData.password_confirmation} onChange={(e) => handleChange(e, setFormData, formData)} />
+            </div>
+          </div>
+
+          {status === "success" && (
+            <div className="px-4 py-3 bg-emerald-900/40 border border-emerald-500/50 text-emerald-400 text-sm font-medium rounded-xl">
+              ✅ Perfil actualizado correctamente
+            </div>
+          )}
+          {status === "error" && (
+            <div className="px-4 py-3 bg-red-900/40 border border-red-500/50 text-red-400 text-sm font-medium rounded-xl">
+              ❌ Error al actualizar. Revisa los datos.
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-white hover:bg-gray-100 text-black font-black text-sm rounded-full transition-colors"
+          >
+            Guardar cambios
+          </button>
+        </form>
+
+        {/* Danger Zone */}
+        <div className="px-4 pb-8 border-t border-gray-800 pt-6">
+          <p className="text-red-500 text-xs font-bold uppercase tracking-widest mb-3">Zona de peligro</p>
+          <button
+            onClick={confirmDelete}
+            className="w-full py-3 bg-transparent border border-red-600 text-red-500 hover:bg-red-600/10 font-bold text-sm rounded-full transition-colors"
+          >
+            Borrar cuenta definitivamente
+          </button>
+        </div>
+
+        <Footer />
+      </div>
+    </div>
+  );
 }

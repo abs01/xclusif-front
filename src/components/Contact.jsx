@@ -7,10 +7,9 @@ export default function Contact() {
 
   useEffect(() => {
     try {
-      const storageData = localStorage.getItem('account2');
+      const storageData = localStorage.getItem("account2");
       if (storageData) {
         const accountData = JSON.parse(storageData);
-        // Accedemos a accountData.user.email según tu estructura
         setUserEmail(accountData?.user?.email || "");
       }
     } catch (error) {
@@ -19,57 +18,55 @@ export default function Contact() {
   }, []);
 
   const adminMail = "admin@admin.com";
-  
-  // Codificamos los componentes para que el link sea seguro
   const subject = encodeURIComponent("Contacto desde Baleartrek");
   const body = encodeURIComponent(`Hola Administrador,\n\nMi correo de cuenta es: ${userEmail}\n\nEscribe aquí tu consulta:`);
-  
-  // El link mailto correcto
   const mailtoLink = `mailto:${adminMail}?subject=${subject}&body=${body}`;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <Header />
-      
-      <main className="flex-1 max-w-2xl mx-auto mt-10 p-4 w-full">
-        <div className="bg-white border-2 border-gray-800 rounded-lg p-8 shadow-[6px_6px_0px_0px_rgba(31,41,55,1)]">
-          <h1 className="text-3xl font-black text-gray-900 mb-6 uppercase tracking-tight">
-            Contacto
-          </h1>
-          
-          <p className="text-gray-600 mb-8 font-medium">
-            ¿Tienes alguna duda sobre las rutas o necesitas ayuda con tu cuenta? 
-            Nuestro equipo de administración te responderá lo antes posible.
+
+      <div className="lg:ml-64 xl:ml-72 lg:max-w-[600px] min-h-screen border-x border-gray-800">
+        <div className="sticky top-0 lg:top-0 mt-14 lg:mt-0 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-3 z-10">
+          <h1 className="text-xl font-black text-white">Contacto</h1>
+          <p className="text-gray-500 text-xs mt-0.5">Nuestro equipo te responderá pronto</p>
+        </div>
+
+        <div className="px-4 py-6 space-y-6">
+          <p className="text-gray-400 text-sm leading-relaxed">
+            ¿Tienes dudas sobre las rutas o necesitas ayuda con tu cuenta? Escríbenos y te responderemos lo antes posible.
           </p>
 
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
-                Tu correo electrónico:
-              </label>
-              <input 
-                type="text" 
-                value={userEmail || "Usuario no identificado"} 
-                readOnly 
-                className="w-full p-3 bg-gray-100 border-2 border-gray-800 rounded text-gray-500 cursor-not-allowed font-mono text-sm"
-              />
-            </div>
-
-            <a 
-              href={mailtoLink}
-              className="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-6 border-2 border-gray-800 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-            >
-              ENVIAR CORREO A SOPORTE
-            </a>
-
-            <p className="text-[10px] text-center text-gray-400 mt-4 uppercase font-bold tracking-widest">
-              * Se abrirá tu gestor de correo predeterminado.
-            </p>
+          <div>
+            <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wide">
+              Tu correo electrónico
+            </label>
+            <input
+              type="text"
+              value={userEmail || "Usuario no identificado"}
+              readOnly
+              className="w-full px-4 py-3 bg-transparent border border-gray-700 rounded-xl text-gray-500 text-sm font-mono cursor-not-allowed"
+            />
           </div>
-        </div>
-      </main>
 
-      <Footer />
+          <a
+            href={mailtoLink}
+            className="flex items-center justify-center gap-2 w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-sm rounded-full transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Enviar correo a soporte
+          </a>
+
+          <p className="text-center text-xs text-gray-600 uppercase tracking-widest">
+            * Se abrirá tu gestor de correo predeterminado
+          </p>
+        </div>
+
+        <Footer />
+      </div>
     </div>
   );
 }

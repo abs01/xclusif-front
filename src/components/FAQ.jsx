@@ -1,84 +1,59 @@
+import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-export default function FAQ() {
-  const faqs = [
-    {
-      question: "¿Es necesario estar federado para unirse a una excursión?",
-      answer: "Sí. Registrarse en la página es un trámite necesario para asegurar la gestión de los grupos."
-    },
-    {
-      question: "¿Qué nivel de dificultad tienen las rutas en Baleartrek?",
-      answer: "Calculamos una media numérica basada en la distancia, el desnivel y el tipo de terreno de las Islas Baleares."
-    },
-    {
-      question: "¿Puedo llevar a mi perro a las excursiones?",
-      answer: "Depende de la ruta y del organizador. Muchas zonas de las Baleares son áreas protegidas (ZEPA) donde los perros deben ir atados."
-    },
-    {
-      question: "¿Cómo funciona la reserva de plazas?",
-      answer: "Una vez encuentres una excursión que te guste, solicita tu plaza directamente desde la ficha del meeting."
-    },
-    {
-      question: "¿Qué equipamiento básico debo llevar?",
-      answer: "Lo esencial: calzado con buen agarre (el terreno es muy rocoso), mínimo 1.5L de agua, protección solar y un cortavientos."
-    },
-    {
-      question: "Como va el sistema de puntuación de cada trek?",
-      answer: "El sistema de 0-5 establece la dificultad de cada trek. 0: No se sabe. 1: Relajado. 2: Fácil. 3: Media. 4: Intenso. 5: Solo expertos."
-    }
-  ];
+const faqs = [
+  { question: "¿Cómo creo una cuenta en Xclusif?", answer: "Haz clic en 'Registrarse', completa el formulario con tus datos personales y confirma tu correo electrónico. ¡Listo! Ya puedes comenzar a compartir con la comunidad." },
+  { question: "¿Mis posts son privados?", answer: "Por defecto, todos los posts son públicos y visibles para cualquier usuario de Xclusif. Puedes gestionar tu privacidad desde la configuración de tu cuenta." },
+  { question: "¿Cómo protejo mi cuenta?", answer: "Usa una contraseña fuerte, no compartas tu contraseña con nadie. También revisa regularmente tu actividad reciente." },
+];
 
+function FAQItem({ faq, index }) {
+  const [open, setOpen] = useState(false);
   return (
-    <>
-     <Header />
-
-    <div className="min-h-screen flex flex-col bg-slate-50">
-      
-      {/* Mantenemos max-w-7xl y px-4 igual que en Treks.jsx 
-          para que el Header y el layout sean simétricos.
-      */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-12 w-full">
-        
-        {/* Este div limita el ancho del contenido de FAQ sin afectar al main global */}
-        <div className="max-w-3xl mx-auto">
-          
-          {/* Título de la página */}
-          <div className="mb-10 text-center">
-            <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight">
-              Preguntas Frecuentes
-            </h2>
-            <p className="text-gray-600 mt-2 font-medium">
-              Resuelve tus dudas antes de empezar la ruta.
-            </p>
-          </div>
-
-          {/* Contenedor de FAQs */}
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <div 
-                key={index} 
-                className="bg-white border-2 border-gray-800 p-6 rounded-lg shadow-[5px_5px_0px_0px_rgba(31,41,55,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_0px_rgba(31,41,55,1)] transition-all"
-              >
-                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start">
-                  <span className="mr-3 text-emerald-500">Q.</span>
-                  {faq.question}
-                </h3>
-                <div className="pl-8 border-l-2 border-gray-100">
-                  <p className="text-gray-600 leading-relaxed font-medium">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
+    <div
+      className="border-b border-gray-800 px-4 py-4 hover:bg-gray-900/40 transition-colors cursor-pointer"
+      onClick={() => setOpen(!open)}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3 flex-1">
+          <span className="text-emerald-500 font-black text-sm mt-0.5 shrink-0">Q{index + 1}</span>
+          <p className="text-white font-bold text-sm leading-snug">{faq.question}</p>
         </div>
-      </main>
-
-      <Footer />
+        <svg
+          viewBox="0 0 24 24"
+          className={`w-4 h-4 text-gray-500 shrink-0 transition-transform mt-0.5 ${open ? "rotate-180" : ""}`}
+          fill="none" stroke="currentColor" strokeWidth="2"
+        >
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+      {open && (
+        <p className="mt-3 ml-7 text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
+      )}
     </div>
-    </>
-   
+  );
+}
+
+export default function FAQ() {
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <Header />
+
+      <div className="lg:ml-64 xl:ml-72 lg:max-w-[600px] min-h-screen border-x border-gray-800">
+        <div className="sticky top-0 lg:top-0 mt-14 lg:mt-0 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-3 z-10">
+          <h1 className="text-xl font-black text-white">Preguntas Frecuentes</h1>
+          <p className="text-gray-500 text-xs mt-0.5">Resuelve tus dudas sobre Xclusif</p>
+        </div>
+
+        <div>
+          {faqs.map((faq, i) => (
+            <FAQItem key={i} faq={faq} index={i} />
+          ))}
+        </div>
+
+        <Footer />
+      </div>
+    </div>
   );
 }

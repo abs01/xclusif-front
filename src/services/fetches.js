@@ -128,9 +128,83 @@ export const logout = async () => {
   }
 };
 
+export const fetchPosts = async (setPosts, setLoading, setError) => {
+  try {
+      const token = localStorage.getItem('token2');
 
-export const leaveComment = async() =>{
+    console.log("Fetching posts..."); // Debug
+    setLoading(true);
+    setError(null);
+
+    const response = await fetch("http://localhost/public/api/posts", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    console.log("Response status:", response.status); // Debug
+
+    if (!response.ok) {
+      throw new Error(`Cuenta necesaria para ver los posts (status ${response.status})`);
+    }
+
+    const data = await response.json();
+    console.log("Data received:", data); // Debug
+
+    if (data.data) {
+      // Si es Resource::collection
+      setPosts(data.data);
+    } else if (Array.isArray(data)) {
+      // Si es un array directo
+      setPosts(data);
+    } else {
+      console.error("Formato de datos inesperado:", data);
+      setPosts([]);
+    }
+  } catch (err) {
+    setError(err.message);
+    console.error("Error fetching posts:", err);
+    setPosts([]);
+  } finally {
+    setLoading(false);
+  }
+}
+
+export const leaveComment = async (postId, commentText, setCommentError, setCommentSuccess) => {
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
   
+  if (!token || !accountData.user) {
+    setCommentError('Debes estar autenticado para comentar');
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost/public/api/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        content: commentText
+      })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setCommentError(data.message || 'Error al dejar el comentario');
+      return;
+    }
+
+    const data = await res.json();
+    setCommentSuccess('Comentario añadido exitosamente');
+    return data;
+  } catch (err) {
+    console.error("Error leaving comment:", err);
+    setCommentError('Error de conexión');
+  }
 }
 
 export const update = async (userData) => {

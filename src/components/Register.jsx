@@ -1,97 +1,105 @@
 import { useState } from "react";
 import { handleSubmit } from "../services/fetches";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
 export default function Register() {
-    const [name, setName] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [email, setEmail] = useState('');
-    const [dni, setDni] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirmation, setPasswordConfirmation] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [dni, setDni] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    // Preparamos el objeto de datos para el registro
-    const userData = {
-        name,
-        lastname,
-        email,
-        dni,
-        phone,
-        password,
-        password_confirmation: passwordConfirmation
-    };
+  const userData = { name, lastname, email, dni, phone, password, password_confirmation: passwordConfirmation };
 
-    return (
-        <div className="min-h-screen flex flex-col bg-slate-50">
-            <Header />
-            <main className="flex-1 flex items-center justify-center p-6">
-                <div className="w-full max-w-2xl bg-white border-4 border-gray-800 p-8 rounded-xl shadow-[10px_10px_0px_0px_rgba(31,41,55,1)]">
-                    
-                    <h1 className="text-3xl font-black text-gray-900 mb-2 uppercase italic">Únete a Baleartrek</h1>
-                    <p className="text-gray-500 font-bold mb-6 uppercase text-xs tracking-widest">Crea tu cuenta de aventurero</p>
+  const inputClass = "w-full px-4 py-3 bg-transparent border border-gray-700 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 transition-colors";
+  const labelClass = "block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wide";
 
-                    {error && (
-                        <div className="mb-6 p-3 bg-red-100 border-2 border-red-600 text-red-700 font-bold rounded">
-                            ⚠️ {error}
-                        </div>
-                    )}
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <Header />
 
-                    <form onSubmit={(e) => handleSubmit(e, setError, navigate, userData)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input 
-                            type="text" placeholder="Nombre" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={name} onChange={e => setName(e.target.value)} required 
-                        />
-                        <input 
-                            type="text" placeholder="Apellidos" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={lastname} onChange={e => setLastname(e.target.value)} required 
-                        />
-                        <input 
-                            type="email" placeholder="Email" 
-                            className="md:col-span-2 p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={email} onChange={e => setEmail(e.target.value)} required 
-                        />
-                        <input 
-                            type="text" placeholder="DNI" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={dni} onChange={e => setDni(e.target.value)} required 
-                        />
-                        <input 
-                            type="tel" placeholder="Teléfono" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={phone} onChange={e => setPhone(e.target.value)} required 
-                        />
-                        <input 
-                            type="password" placeholder="Contraseña" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={password} onChange={e => setPassword(e.target.value)} required 
-                        />
-                        <input 
-                            type="password" placeholder="Confirmar Contraseña" 
-                            className="p-3 border-2 border-gray-800 rounded font-bold outline-none focus:bg-emerald-50"
-                            value={passwordConfirmation} onChange={e => setPasswordConfirmation(e.target.value)} required 
-                        />
-                        
-                        <button 
-                            type="submit"
-                            className="md:col-span-2 mt-4 bg-emerald-400 text-black font-black py-4 border-2 border-gray-800 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase"
-                        >
-                            Registrarse ahora
-                        </button>
-                    </form>
+      <main className="flex-1 flex items-center justify-center p-4 mt-14 lg:mt-0 mb-14 lg:mb-0 py-8">
+        <div className="w-full max-w-lg">
+          <div className="mb-8 text-center">
+            <img src="/logoxclusif.svg" alt="Xclusif" className="h-10 w-auto mx-auto mb-6" />
+            <h1 className="text-3xl font-black text-white">Únete a Baleartrek</h1>
+            <p className="text-gray-500 mt-1 text-sm">Crea tu cuenta de aventurero</p>
+          </div>
 
-                    <p className="mt-6 text-center font-bold text-sm text-gray-600">
-                        ¿Ya tienes cuenta? <Link to="/login" className="text-emerald-600 underline">Inicia sesión</Link>
-                    </p>
-                </div>
-            </main>
-            <Footer />
+          {error && (
+            <div className="mb-4 px-4 py-3 bg-red-900/40 border border-red-500/50 text-red-400 text-sm font-medium rounded-xl">
+              ⚠️ {error}
+            </div>
+          )}
+
+          <form
+            onSubmit={(e) => handleSubmit(e, setError, navigate, userData)}
+            className="space-y-4"
+          >
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Nombre</label>
+                <input type="text" placeholder="Nombre" className={inputClass} value={name} onChange={(e) => setName(e.target.value)} required />
+              </div>
+              <div>
+                <label className={labelClass}>Apellidos</label>
+                <input type="text" placeholder="Apellidos" className={inputClass} value={lastname} onChange={(e) => setLastname(e.target.value)} required />
+              </div>
+            </div>
+
+            <div>
+              <label className={labelClass}>Email</label>
+              <input type="email" placeholder="ejemplo@baleartrek.com" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>DNI</label>
+                <input type="text" placeholder="12345678A" className={inputClass} value={dni} onChange={(e) => setDni(e.target.value)} required />
+              </div>
+              <div>
+                <label className={labelClass}>Teléfono</label>
+                <input type="tel" placeholder="+34 600 000 000" className={inputClass} value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Contraseña</label>
+                <input type="password" placeholder="••••••••" className={inputClass} value={password} onChange={(e) => setPassword(e.target.value)} required />
+              </div>
+              <div>
+                <label className={labelClass}>Confirmar</label>
+                <input type="password" placeholder="••••••••" className={inputClass} value={passwordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} required />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-sm rounded-full transition-colors mt-2"
+            >
+              Crear cuenta
+            </button>
+          </form>
+
+          <div className="mt-6 pt-5 border-t border-gray-800 text-center">
+            <p className="text-sm text-gray-500">
+              ¿Ya tienes cuenta?{" "}
+              <Link to="/login" className="text-emerald-500 font-bold hover:underline">
+                Inicia sesión
+              </Link>
+            </p>
+          </div>
         </div>
-    );
+      </main>
+
+      <Footer />
+    </div>
+  );
 }
