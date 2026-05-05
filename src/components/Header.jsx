@@ -33,11 +33,11 @@ export default function Header() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 xl:w-72 flex-col justify-between py-6 px-4 border-r border-gray-800 bg-gradient-to-b from-black to-gray-950 z-50">
+      <aside className="hidden lg:flex fixed left-0 top-0 h-full w-64 xl:w-72 flex-col justify-between px-4 border-r border-gray-800 bg-gradient-to-b from-black to-gray-950 z-50">
         <div>
           {/* Logo */}
-          <Link to="/" className="flex items-center px-4 py-3 mb-8 group">
-            <img src="/booleanlogo.svg" alt="Xclusif" className="h-9 w-auto drop-shadow-lg" />
+          <Link to="/" className="flex items-center gap-2 mb-8">
+            <img src="/logoxclusif.svg" alt="Xclusif" className="h-lg w-xs drop-shadow-lg" />
           </Link>
 
           {/* Nav */}

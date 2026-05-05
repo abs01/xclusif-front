@@ -40,7 +40,7 @@ export default function FAQ() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       <Header />
 
-      <div className="lg:ml-64 xl:ml-72 lg:max-w-[600px] min-h-screen border-x border-gray-800">
+      <div className="lg:ml-64 xl:ml-72 pe-50 min-h-screen border-x border-gray-800">
         <div className="sticky top-0 lg:top-0 mt-14 lg:mt-0 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-3 z-10">
           <h1 className="text-xl font-black text-white">Preguntas Frecuentes</h1>
           <p className="text-gray-500 text-xs mt-0.5">Resuelve tus dudas sobre Xclusif</p>
