@@ -21,25 +21,19 @@ export default function CardPosts({ post }) {
 
         <p className="text-gray-100 text-sm leading-relaxed break-words">{post.content}</p>
 
-        {/* Action row */}
         <div className="flex items-center gap-6 mt-2 text-gray-500">
           <button className="flex items-center gap-1.5 text-xs hover:text-blue-400 transition-colors group/btn">
             <svg viewBox="0 0 24 24" className="w-4 h-4 group-hover/btn:bg-blue-400/10 rounded-full" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
             </svg>
-            <span>0</span>
+            <span>{post.comments.length}</span>
           </button>
-          <button className="flex items-center gap-1.5 text-xs hover:text-emerald-400 transition-colors group/btn">
-            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/>
-            </svg>
-            <span>0</span>
-          </button>
+          
           <button className="flex items-center gap-1.5 text-xs hover:text-pink-400 transition-colors">
             <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
             </svg>
-            <span>0</span>
+            <span>{post.likes.length}</span>
           </button>
         </div>
       </div>
