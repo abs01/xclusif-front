@@ -1,7 +1,15 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Publicidad from "./Publicidad";
+import { checkPremium } from "../services/fetches";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [isPremium, setIsPremium] = useState(true); // true por defecto evita flash de publicidad
+
+  useEffect(() => {
+    checkPremium().then(setIsPremium);
+  }, []);
 
   return (
     <footer className="border-t border-gray-800 mt-auto px-4 py-6">
@@ -21,6 +29,11 @@ export default function Footer() {
           <p className="mt-0.5">by <span className="text-gray-300">Antoni Xavier Bascuñana Sánchez</span></p>
         </div>
       </div>
+      {!isPremium && (
+        <div className="mt-6">
+          <Publicidad />
+        </div>
+      )}
     </footer>
   );
 }

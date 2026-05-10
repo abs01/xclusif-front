@@ -1,3 +1,5 @@
+import { exp } from "mathjs";
+
 export const handleChange = (e, setFormData, formData) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -21,7 +23,27 @@ export const handleUpdate = async (e, formData, setStatus, update) => {
         setStatus(result ? 'success' : 'error');
 };
 
+export const checkPremium = async () => {
+  
+  try {
+    const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2'));
+  console.log(`http://localhost/public/api/user/${accountData.user.id}/is_tier_premium`); // Debug
+    const res = await fetch(`http://localhost/public/api/user/${accountData.user.id}/is_tier_premium`, {
+      headers: {
+        'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
 
+      },
+    });
+    const data = await res.json();
+    // console.log(data.is_premium); // Debug
+    return data.is_premium;
+} catch (err) {
+    console.error("Error checking premium status:", err);
+    return false;
+  }
+};
 export const disableAccount = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem('token2');

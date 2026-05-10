@@ -1,15 +1,35 @@
 import { useState, useEffect } from "react";
 import CardPosts from "./CardPosts";
 import { fetchPosts } from "../services/fetches";
-
+import LoadMore from "./LoadMore";
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+const [indexPosts, setIndexPosts] = useState(8);
 
   useEffect(() => {
     fetchPosts(setPosts, setLoading, setError);
   }, []);
+
+  function toggleShowMore() {
+  if (!showMore) {
+    // SHOW MORE
+    const newIndex = indexPosts + 4;
+
+    if (newIndex >= posts.length) {
+      setIndexPosts(posts.length);
+      setShowMore(true);
+    } else {
+      setIndexPosts(newIndex);
+    }
+  } else {
+    // SHOW LESS
+    setIndexPosts(8);
+    setShowMore(false);
+  }
+}
 
   return (
     <main>
@@ -36,14 +56,16 @@ export default function Posts() {
       {!loading && !error && (
         <>
           {posts.length > 0 ? (
-            posts.map((post, i) => <CardPosts key={post.id || i} post={post} />)
+            posts.slice(0, indexPosts).map((post, i) => <CardPosts key={post.id || i} post={post} />)
           ) : (
             <div className="py-20 text-center text-gray-500 text-sm">
               No hay posts disponibles.
             </div>
           )}
         </>
-      )}
+      )
+      }
+      <LoadMore showMore={showMore} toggleShowMore={toggleShowMore} />
     </main>
   );
 }
