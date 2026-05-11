@@ -193,6 +193,7 @@ export const fetchPosts = async (setPosts, setLoading, setError) => {
   }
 }
 
+
 export const leaveComment = async (postId, commentText, setCommentError, setCommentSuccess) => {
   const token = localStorage.getItem('token2');
   const accountData = JSON.parse(localStorage.getItem('account2')) || {};
@@ -228,6 +229,47 @@ export const leaveComment = async (postId, commentText, setCommentError, setComm
     setCommentError('Error de conexión');
   }
 }
+
+export const likePost = async (liked, postId, likeId) => {
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+  const url = liked ? 'http://localhost/public/api/likes' : `http://localhost/public/api/likes/${likeId}`;
+  try {
+    if (liked){
+      const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        post_id: postId
+        })
+    });
+    if (!res.ok) {
+      console.error("Like/Unlike failed", res.status);
+    }
+    }
+    else {      
+      const res = await fetch(url, {
+      method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+       body: JSON.stringify({
+        like_id: likeId 
+      })
+      });
+      if (!res.ok) {
+      console.error("Like/Unlike failed", res.status);
+    }
+    }
+
+  } catch (err) {
+    console.error("Error like/unlike:", err);
+  }
+} 
 
 export const update = async (userData) => {
   const token = localStorage.getItem('token2');

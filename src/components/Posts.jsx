@@ -7,7 +7,7 @@ export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showMore, setShowMore] = useState(false);
-const [indexPosts, setIndexPosts] = useState(8);
+  const [indexPosts, setIndexPosts] = useState(8);
 
   useEffect(() => {
     fetchPosts(setPosts, setLoading, setError);
@@ -56,7 +56,7 @@ const [indexPosts, setIndexPosts] = useState(8);
       {!loading && !error && (
         <>
           {posts.length > 0 ? (
-            posts.slice(0, indexPosts).map((post, i) => <CardPosts key={post.id || i} post={post} />)
+            posts.slice(0, indexPosts).map((post, i) => <CardPosts key={post.id || i} post={post} iniLike={false}/>)
           ) : (
             <div className="py-20 text-center text-gray-500 text-sm">
               No hay posts disponibles.

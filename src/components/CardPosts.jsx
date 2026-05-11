@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
 import { GoComment } from "react-icons/go";
 import { FaRegHeart } from "react-icons/fa6";
-export default function CardPosts({ post }) {
+import { FaHeart } from "react-icons/fa6";
+import { useState } from "react";
+import { likePost } from "../services/fetches";
+
+export default function CardPosts({ post,iniLike }) {
+      const [likes, setLikes] = useState(iniLike);
+      const [likesLength, setLikesLength] = useState(post.likes.length);
+
   return (
     <article className="flex gap-4 px-4 py-4 border-b border-gray-800 hover:bg-gray-900/40 transition-colors cursor-pointer group">
       {/* Avatar */}
       <div className="shrink-0">
-        <script>console.log(post)</script>
+        {/* <script>console.log(post)</script> */}
         <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-sm font-bold text-gray-300">
           {String(post.user.name || "?").charAt(0).toUpperCase()}
         </div>
@@ -29,8 +36,8 @@ export default function CardPosts({ post }) {
           </button>
           
           <button className="flex items-center gap-1.5 text-xs hover:text-pink-400 transition-colors">
-            <FaRegHeart className="w-4 h-4" />
-            <span>{post.likes.length}</span>
+            {likes ? <FaHeart className="w-4 h-4 text-pink-400" onClick={() => { setLikes(false); likePost(false, post.id, post.likes[post.likes.length - 1]?.id); setLikesLength(likesLength - 1); }} /> : <FaRegHeart className="w-4 h-4" onClick={() => { console.log(post),setLikes(true); likePost(true, post.id), setLikesLength(likesLength + 1); }} />}
+            <span>{likesLength}</span>
           </button>
         </div>
       </div>
