@@ -1,4 +1,3 @@
-import { exp } from "mathjs";
 
 export const handleChange = (e, setFormData, formData) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,7 +21,22 @@ export const handleUpdate = async (e, formData, setStatus, update) => {
         const result = await update(payload);
         setStatus(result ? 'success' : 'error');
 };
-
+export const checkUser = async (userId) => {
+  try {
+    const token = localStorage.getItem('token2');
+    const res = await fetch(`http://localhost/public/api/users/${userId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    console.error("Error checking user:", err);
+    return null;
+  }
+}
 export const checkPremium = async () => {
   
   try {
@@ -298,5 +312,38 @@ export const update = async (userData) => {
     return data;
   } catch (err) {
     console.error("Error updating:", err);
+  }
+};
+
+export const fetchPostById = async (postId, setPost, setLoading, setError) => {
+  try {
+    const token = localStorage.getItem('token2');
+    
+    setLoading(true);
+    setError(null);
+
+    const response = await fetch(`http://localhost/public/api/posts/${postId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener el post (status ${response.status})`);
+    }
+
+    const data = await response.json();
+    
+    if (data.data) {
+      setPost(data.data);
+    } else {
+      setPost(data);
+    }
+  } catch (err) {
+    setError(err.message);
+    console.error("Error fetching post:", err);
+  } finally {
+    setLoading(false);
   }
 };
