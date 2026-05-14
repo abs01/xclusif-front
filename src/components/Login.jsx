@@ -38,7 +38,7 @@ export default function Login() {
               </label>
               <input
                 type="email"
-                placeholder="ejemplo@baleartrek.com"
+                placeholder="ejemplo@xclusif.com"
                 className="w-full px-4 py-3 bg-transparent border border-gray-700 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

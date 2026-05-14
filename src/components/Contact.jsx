@@ -18,7 +18,7 @@ export default function Contact() {
   }, []);
 
   const adminMail = "admin@admin.com";
-  const subject = encodeURIComponent("Contacto desde Baleartrek");
+  const subject = encodeURIComponent("Contacto desde Xclusif");
   const body = encodeURIComponent(`Hola Administrador,\n\nMi correo de cuenta es: ${userEmail}\n\nEscribe aquí tu consulta:`);
   const mailtoLink = `mailto:${adminMail}?subject=${subject}&body=${body}`;
 

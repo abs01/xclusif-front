@@ -28,8 +28,8 @@ export default function Register() {
         <div className="w-full max-w-lg">
           <div className="mb-8 text-center">
             <img src="/logoxclusif.svg" alt="Xclusif" className="h-10 w-auto mx-auto mb-6" />
-            <h1 className="text-3xl font-black text-white">Únete a Baleartrek</h1>
-            <p className="text-gray-500 mt-1 text-sm">Crea tu cuenta de aventurero</p>
+            <h1 className="text-3xl font-black text-white">Únete a Xclusif</h1>
+            <p className="text-gray-500 mt-1 text-sm">Crea tu cuenta de Usuario</p>
           </div>
 
           {error && (
@@ -55,7 +55,7 @@ export default function Register() {
 
             <div>
               <label className={labelClass}>Email</label>
-              <input type="email" placeholder="ejemplo@baleartrek.com" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input type="email" placeholder="ejemplo@xclusif.com" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
