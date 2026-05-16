@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { logout, update, handleUpdate, handleChange, disableAccount } from "../services/fetches";
+import { logout, handleUpdate, handleChange, disableAccount } from "../services/fetches";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -59,7 +59,7 @@ export default function Account() {
               </button>
             </div>
             <h2 className="text-xl font-black text-white">{user.name} {user.lastname}</h2>
-            <p className="text-gray-500 text-sm">@baleartrek · <span className="text-emerald-500">{user.role || "Senderista"}</span></p>
+            <p className="text-gray-500 text-sm">@xclusif · <span className="text-emerald-500">{user.role || "Senderista"}</span></p>
             <p className="text-gray-500 text-sm mt-1 font-mono">{user.dni}</p>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Account() {
         </div>
 
         {/* Form */}
-        <form onSubmit={(e) => handleUpdate(e, formData, setStatus, update)} className="px-4 py-6 space-y-5">
+        <form onSubmit={(e) => handleUpdate(e, formData, setStatus)} className="px-4 py-6 space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Nombre</label>

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import CardPosts from "./CardPosts";
 import { fetchPosts } from "../services/fetches";
 import LoadMore from "./LoadMore";
+import { fetchPostById } from "../services/fetches";
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [indexPosts, setIndexPosts] = useState(8);
-
+  
   useEffect(() => {
     fetchPosts(setPosts, setLoading, setError);
   }, []);
@@ -56,7 +57,10 @@ export default function Posts() {
       {!loading && !error && (
         <>
           {posts.length > 0 ? (
-            posts.slice(0, indexPosts).map((post, i) => <CardPosts key={post.id || i} post={post} iniLike={false}/>)
+            posts.slice(0, indexPosts).map((post, i) => {
+              const like = post.likes.some(like => like.user_id === JSON.parse(localStorage.getItem('account2'))?.user?.id);
+              return <CardPosts key={post.id || i} post={post} iniLike={like} />;
+            })
           ) : (
             <div className="py-20 text-center text-gray-500 text-sm">
               No hay posts disponibles.
