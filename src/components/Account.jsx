@@ -6,7 +6,6 @@ import Footer from "./Footer";
 export default function Account() {
   const accountData = JSON.parse(localStorage.getItem("account2")) || {};
   const user = accountData.user || {};
-
   const [formData, setFormData] = useState({
     name: user.name || "",
     lastname: user.lastname || "",
@@ -14,7 +13,9 @@ export default function Account() {
     dni: user.dni || "",
     phone: user.phone || "",
     password: "",
+    tier_id: user.tier_id || 1,
     password_confirmation: "",
+    
   });
 
   const [status, setStatus] = useState(null);
@@ -25,11 +26,62 @@ export default function Account() {
       disableAccount(e);
     }
   };
+   
+const confirmFree = (e) => {
+  e.preventDefault();
 
+  if (
+    window.confirm(
+      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al gratuito. Empezarás a ver publicidad en la plataforma."
+    )
+  ) {
+    setFormData((prev) => ({
+      ...prev,
+      tier_id: 1,
+    }));
+
+    console.log("Nuevo tier:", 1);
+  }
+};
+
+const confirmGold = (e) => {
+  e.preventDefault();
+
+  if (
+    window.confirm(
+      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al oro."
+    )
+  ) {
+    setFormData((prev) => ({
+      ...prev,
+      tier_id: 2,
+    }));
+
+    console.log("Nuevo tier:", 2);
+  }
+};
+
+const confirmDiamond = (e) => {
+  e.preventDefault();
+
+  if (
+    window.confirm(
+      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al diamante."
+    )
+  ) {
+    setFormData((prev) => ({
+      ...prev,
+      tier_id: 3,
+    }));
+
+    console.log("Nuevo tier:", 3);
+  }
+};
   const inputClass = "w-full px-4 py-3 bg-transparent border border-gray-700 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 transition-colors";
   const labelClass = "block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wide";
 
   return (
+    console.log(user),
     <div className="min-h-screen bg-black text-white flex flex-col">
       <Header />
 
@@ -59,7 +111,7 @@ export default function Account() {
               </button>
             </div>
             <h2 className="text-xl font-black text-white">{user.name} {user.lastname}</h2>
-            <p className="text-gray-500 text-sm">@xclusif · <span className="text-emerald-500">{user.role || "Senderista"}</span></p>
+            <p className="text-gray-500 text-sm">@xclusif · <span className="text-emerald-500">{user.role || "Sin rol"}</span></p>
             <p className="text-gray-500 text-sm mt-1 font-mono">{user.dni}</p>
           </div>
         </div>
@@ -118,7 +170,27 @@ export default function Account() {
               ❌ Error al actualizar. Revisa los datos.
             </div>
           )}
-
+           <div className="px-4 pb-8 border-t border-gray-800 pt-6">
+          <p className="text-yellow-500 text-xs font-bold uppercase tracking-widest mb-3">Tiers</p>
+          <button
+            onClick={confirmFree}
+            className="w-full mt-4 py-3 bg-transparent border border-gray-600 text-gray-500 hover:bg-gray-600/10 font-bold text-sm rounded-full transition-colors"
+          >
+            Cambiar a tier gratuito
+          </button>
+          <button
+            onClick={confirmGold}
+            className="w-full mt-4 py-3 bg-transparent border border-gray-600 text-gray-500 hover:bg-gray-600/10 font-bold text-sm rounded-full transition-colors"
+          >
+            Cambiar a oro
+          </button>
+          <button
+            onClick={confirmDiamond}
+            className="w-full mt-4 py-3 bg-transparent border border-gray-600 text-gray-500 hover:bg-gray-600/10 font-bold text-sm rounded-full transition-colors"
+          >
+            Cambiar a diamante
+          </button>
+        </div>
           <button
             type="submit"
             className="w-full py-3 bg-white hover:bg-gray-100 text-black font-black text-sm rounded-full transition-colors"
@@ -127,6 +199,7 @@ export default function Account() {
           </button>
         </form>
 
+       
         {/* Danger Zone */}
         <div className="px-4 pb-8 border-t border-gray-800 pt-6">
           <p className="text-red-500 text-xs font-bold uppercase tracking-widest mb-3">Zona de peligro</p>

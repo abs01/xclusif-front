@@ -11,7 +11,7 @@ import Contact from './components/Contact';
 import Home from './components/Home';
 import Login from './components/Login';
 import SinglePost  from './components/SinglePost';
-
+import CreatePost from './components/CreatePost';
 function App() {
   const [account, setAccount] = useState({}); // Estado para guardar los datos de la cuenta
 
@@ -25,7 +25,7 @@ function App() {
         <Route path="/FAQ" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/post/:id" element={<SinglePost />} />
-
+        <Route path="/create-post" element={<CreatePost />} />
         <Route path="*" element={<Home account={account} />} />
       </Routes>
     </Router>

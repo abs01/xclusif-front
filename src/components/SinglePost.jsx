@@ -8,6 +8,7 @@ import { likePost } from "../services/fetches";
 import { checkUser } from "../services/fetches";
 import Header from "./Header";
 import Footer from "./Footer";
+import Comment from "./Comment";
 export default function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -107,6 +108,10 @@ export default function SinglePost() {
 
           {/* Contenido del post */}
           <p className="text-xl leading-relaxed mb-4 break-words">{post.content}</p>
+          {/* Imagen del post */}
+          {post.media && (
+            <img src={"http://127.0.0.1:8000/images/"+post.media.file_path} alt="Imagen del post" className="w-full h-auto rounded-lg mb-4" />
+          )}
 
           {/* Estadísticas */}
           <div className="flex gap-6 py-4 border-t border-gray-800 text-gray-500 text-sm mb-4">
@@ -151,7 +156,7 @@ export default function SinglePost() {
 
         {/* Lista de comentarios */}
         <div>
-          {post.comments && post.comments.length > 0 ? (
+          {
             post.comments.map((comment, index) => {
               const user = usersCache[index] || null;
               return (
@@ -171,13 +176,14 @@ export default function SinglePost() {
                 </article>
               );
             })
-          ) : (
-            <div className="py-12 text-center text-gray-500 text-sm">
-              No hay comentarios aún. ¡Sé el primero en comentar!
-            </div>
-          )}
+          
+          }
         </div>
+
+        
       </div>
+          <Comment postId={post.id} />
+
       <Footer />
     </div>
   );

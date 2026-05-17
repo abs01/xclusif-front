@@ -3,6 +3,41 @@ export const handleChange = (e, setFormData, formData) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+
+
+export const handleSubmitPost = async (e, postContent, setPostSuccess) => {
+  //localhost/public/api/posts
+  e.preventDefault();
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+ if (!token || !accountData.user) {
+    setPostSuccess('Debes estar autenticado para publicar');
+    return;
+  }
+  try {
+    const res = await fetch(`http://localhost/public/api/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      //Falta media
+      body: JSON.stringify({ content: postContent, user_id: accountData.user.id })
+    });
+    if (!res.ok) {
+      setPostSuccess('Error al publicar');
+      return;
+    }
+    setPostSuccess('Post publicado con éxito');
+  } catch (err) {
+    console.error("Error submitting post:", err);
+    setPostSuccess('Error al publicar');
+  }
+};
+
+
+
+
 export const handleUpdate = async (e, formData, setStatus) => {
         e.preventDefault();
         console.log("Updating with data:", formData); // Debug
@@ -15,12 +50,13 @@ export const handleUpdate = async (e, formData, setStatus) => {
             email: formData.email,
             dni: formData.dni,
             phone: formData.phone,
+            tier_id: formData.tier_id,
             ...(formData.password && {
                 password: formData.password,
                 password_confirmation: formData.password_confirmation
             })
         };
-
+      console.log("Payload for update:", payload); // Debug
        const res = await fetch(`http://localhost/public/api/users/${accountData.user.id}`, {
             method: 'PUT',
             headers: {
@@ -31,6 +67,41 @@ export const handleUpdate = async (e, formData, setStatus) => {
         });
         setStatus(res ? 'success' : 'error');
 };
+
+
+
+export const handleSubmitComment = async (e, postId, commentText, setCommentSuccess) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+ if (!token || !accountData.user) {
+    setCommentError('Debes estar autenticado para comentar');
+    return;
+  }
+  try {
+    const res = await fetch(`http://localhost/public/api/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ content: commentText, post_id: postId })
+    });
+    if (!res.ok) {
+      setCommentSuccess(false);
+      return;
+    }
+    setCommentSuccess(true);
+  } catch (err) {
+    console.error("Error submitting comment:", err);
+    setCommentSuccess(false);
+  }
+};
+
+
+
+
+
 export const checkUser = async (userId) => {
   try {
     const token = localStorage.getItem('token2');
@@ -47,6 +118,11 @@ export const checkUser = async (userId) => {
     return null;
   }
 }
+
+
+
+
+
 export const checkPremium = async () => {
   
   try {
@@ -68,6 +144,11 @@ export const checkPremium = async () => {
     return false;
   }
 };
+
+
+
+
+
 export const disableAccount = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem('token2');
@@ -174,6 +255,10 @@ export const logout = async () => {
   }
 };
 
+
+
+
+
 export const fetchPosts = async (setPosts, setLoading, setError) => {
   try {
       const token = localStorage.getItem('token2');
@@ -218,6 +303,9 @@ export const fetchPosts = async (setPosts, setLoading, setError) => {
 }
 
 
+
+
+
 export const leaveComment = async (postId, commentText, setCommentError, setCommentSuccess) => {
   const token = localStorage.getItem('token2');
   const accountData = JSON.parse(localStorage.getItem('account2')) || {};
@@ -253,6 +341,11 @@ export const leaveComment = async (postId, commentText, setCommentError, setComm
     setCommentError('Error de conexión');
   }
 }
+
+
+
+
+
 
 export const likePost = async (liked, postId, likeId) => {
   const token = localStorage.getItem('token2');
@@ -294,6 +387,10 @@ export const likePost = async (liked, postId, likeId) => {
     console.error("Error like/unlike:", err);
   }
 } 
+
+
+
+
 
 
 export const fetchPostById = async (postId, setPost, setLoading, setError) => {
