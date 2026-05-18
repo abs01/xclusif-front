@@ -5,29 +5,57 @@ export const handleChange = (e, setFormData, formData) => {
 
 
 
-export const handleSubmitPost = async (e, postContent, setPostSuccess) => {
-  //localhost/public/api/posts
+export const handleSubmitPost = async (e, postContent, imageFile, setPostSuccess) => {
   e.preventDefault();
   const token = localStorage.getItem('token2');
   const accountData = JSON.parse(localStorage.getItem('account2')) || {};
- if (!token || !accountData.user) {
+
+  if (!token || !accountData.user) {
     setPostSuccess('Debes estar autenticado para publicar');
     return;
   }
+
   try {
+    // 1. Crear el post
     const res = await fetch(`http://localhost/public/api/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      //Falta media
       body: JSON.stringify({ content: postContent, user_id: accountData.user.id })
     });
+
     if (!res.ok) {
       setPostSuccess('Error al publicar');
       return;
     }
+
+    const data = await res.json();
+    const postId = data.data.id;
+
+    // 2. Si hay imagen, subirla
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append('file_path', imageFile);
+
+      const imgRes = await fetch(`http://localhost/public/api/posts/${postId}/image`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+          // No pongas Content-Type aquí, FormData lo gestiona solo
+        },
+        body: formData
+      });
+
+      if (!imgRes.ok) {
+        setPostSuccess('Post creado pero error al subir la imagen');
+        return;
+      }
+    }
+
     setPostSuccess('Post publicado con éxito');
   } catch (err) {
     console.error("Error submitting post:", err);
