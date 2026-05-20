@@ -9,6 +9,8 @@ import { checkUser } from "../services/fetches";
 import Header from "./Header";
 import Footer from "./Footer";
 import Comment from "./Comment";
+import { handleDeleteComment } from "../services/fetches";
+import { FaTrash } from "react-icons/fa";
 export default function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -16,17 +18,26 @@ export default function SinglePost() {
   const [error, setError] = useState(null);
   const [likes, setLikes] = useState(false);
   const [likesLength, setLikesLength] = useState(0);
+  const [commentsLength, setCommentsLength] = useState(0);
+
   const [usersCache, setUsersCache] = useState([]);
+   const accountData = JSON.parse(localStorage.getItem("account2")) || {};
 
   useEffect(() => {
     if (id) {
       fetchPostById(id, setPost, setLoading, setError);
     }
   }, [id]);
+useEffect(() => {
+  if (commentsLength != post?.comments?.length) {
+    fetchPostById(id, setPost, setLoading, setError);
+  }
+}, [commentsLength]);
 
   useEffect(() => {
     if (post) {
       setLikesLength(post.likes.length);
+      setCommentsLength(post.comments.length);
       setLikes(post.likes.some(like => like.user_id === JSON.parse(localStorage.getItem('account2'))?.user?.id));
     }
   }, [post]);
@@ -116,7 +127,7 @@ export default function SinglePost() {
           {/* Estadísticas */}
           <div className="flex gap-6 py-4 border-t border-gray-800 text-gray-500 text-sm mb-4">
             <div className="hover:text-blue-400 cursor-pointer">
-              <span className="font-bold text-white">{post.comments.length}</span> comentarios
+              <span className="font-bold text-white">{commentsLength}</span> comentarios
             </div>
             <div className="hover:text-pink-400 cursor-pointer">
               <span className="font-bold text-white">{likesLength}</span> me gusta
@@ -173,6 +184,17 @@ export default function SinglePost() {
                     </div>
                     <p className="text-gray-100 text-sm leading-relaxed break-words mt-2">{comment.content}</p>
                   </div>
+                  {accountData.user?.id === comment.user_id && (
+                    <button className="text-red-500 text-xs hover:text-red-700 transition-colors" onClick={(e) => {
+                      if (window.confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+                        handleDeleteComment(e, comment.id);
+                        setCommentsLength(commentsLength - 1);
+                      }
+                    }}>
+                      <FaTrash className="w-4 h-4" />
+                    </button>
+                  )}
+                 
                 </article>
               );
             })
@@ -182,7 +204,7 @@ export default function SinglePost() {
 
         
       </div>
-          <Comment postId={post.id} />
+          <Comment postId={post.id} commentsLength={commentsLength} setCommentLength={setCommentsLength} />
 
       <Footer />
     </div>

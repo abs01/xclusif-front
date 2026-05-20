@@ -127,7 +127,28 @@ export const handleSubmitComment = async (e, postId, commentText, setCommentSucc
 };
 
 
-
+export const handleDeleteComment = async (e, commentId) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+ if (!token || !accountData.user) {
+    return;
+  }
+  try {
+    const res = await fetch(`http://localhost/public/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      return;
+    }
+  } catch (err) {
+    console.error("Error submitting comment:", err);
+  }
+};
 
 
 export const checkUser = async (userId) => {

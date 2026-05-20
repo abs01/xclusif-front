@@ -2,7 +2,7 @@ import { useState } from "react";
 import { logout, handleUpdate, handleChange, disableAccount } from "../services/fetches";
 import Header from "./Header";
 import Footer from "./Footer";
-
+import { FaCheck, FaTimes } from "react-icons/fa";
 export default function Account() {
   const accountData = JSON.parse(localStorage.getItem("account2")) || {};
   const user = accountData.user || {};
@@ -22,7 +22,7 @@ export default function Account() {
 
   const confirmDelete = (e) => {
     e.preventDefault();
-    if (window.confirm("⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible.")) {
+    if (window.confirm('¿Estás COMPLETAMENTE seguro? Esta acción es irreversible.')) {
       disableAccount(e);
     }
   };
@@ -32,7 +32,7 @@ const confirmFree = (e) => {
 
   if (
     window.confirm(
-      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al gratuito. Empezarás a ver publicidad en la plataforma."
+      '¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al gratuito. Empezarás a ver publicidad en la plataforma.' 
     )
   ) {
     setFormData((prev) => ({
@@ -49,7 +49,7 @@ const confirmGold = (e) => {
 
   if (
     window.confirm(
-      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al oro."
+      '¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al oro.'
     )
   ) {
     setFormData((prev) => ({
@@ -66,7 +66,7 @@ const confirmDiamond = (e) => {
 
   if (
     window.confirm(
-      "⚠️ ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al diamante."
+      ' ¿Estás COMPLETAMENTE seguro? Esta acción es irreversible y cambiará tu tier al diamante.'
     )
   ) {
     setFormData((prev) => ({
@@ -162,12 +162,12 @@ const confirmDiamond = (e) => {
 
           {status === "success" && (
             <div className="px-4 py-3 bg-emerald-900/40 border border-emerald-500/50 text-emerald-400 text-sm font-medium rounded-xl">
-              ✅ Perfil actualizado correctamente
+              <FaCheck className="inline-block mr-2" /> Perfil actualizado correctamente
             </div>
           )}
           {status === "error" && (
             <div className="px-4 py-3 bg-red-900/40 border border-red-500/50 text-red-400 text-sm font-medium rounded-xl">
-              ❌ Error al actualizar. Revisa los datos.
+              <FaTimes className="inline-block mr-2" /> Error al actualizar. Revisa los datos.
             </div>
           )}
            <div className="px-4 pb-8 border-t border-gray-800 pt-6">
