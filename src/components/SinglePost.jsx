@@ -11,11 +11,15 @@ import Footer from "./Footer";
 import Comment from "./Comment";
 import { handleDeleteComment } from "../services/fetches";
 import { FaTrash } from "react-icons/fa";
+import {  RiUserUnfollowFill, RiUserFollowFill } from "react-icons/ri";
+import { followUser } from "../services/fetches";
 export default function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+    const [follow, setFollow] = useState(false);
+
   const [likes, setLikes] = useState(false);
   const [likesLength, setLikesLength] = useState(0);
   const [commentsLength, setCommentsLength] = useState(0);
@@ -115,6 +119,29 @@ useEffect(() => {
               </div>
               <p className="text-gray-500 text-sm">{new Date(post.created_at).toLocaleString()}</p>
             </div>
+
+             <button className="flex items-center gap-2 hover:text-blue-400 transition-colors group flex-1 justify-center py-2">
+              {follow ? (
+                <RiUserUnfollowFill
+                  className="w-4 h-4 text-red-400" 
+                  onClick={() => { 
+                    setFollow(false);
+                    followUser(false, post.user.id);
+                  }} 
+                />
+              ) : (
+                <RiUserFollowFill 
+                  className="w-4 h-4 text-blue-400" 
+                  onClick={() => { 
+                    setFollow(true);
+                    followUser(true, post.user.id);
+                  }} 
+                
+                  
+                />
+              )}
+              <span className="text-sm">Seguir</span>
+            </button>
           </div>
 
           {/* Contenido del post */}

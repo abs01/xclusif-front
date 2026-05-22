@@ -232,6 +232,34 @@ export const disableAccount = async (e) => {
   }
 };
 
+export const followUser = async (follow, userId) => {
+  const token = localStorage.getItem('token2');
+  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+    if (follow){
+      const res = await fetch(`http://localhost/public/api/followers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        following_id: userId
+        })
+    });
+    if (!res.ok) {
+      console.error("Follow/Unfollow failed", res.status);
+    }
+   
+    }
+    else {      
+      const res = await fetch(`http://localhost/public/api/followers/${userId}`, {
+      method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });   
+}};
 // Agrega esta función o actualiza la existente en fetches.js
 
 export const handleSubmit = async (e, setError, navigate, emailOrData, password) => {
