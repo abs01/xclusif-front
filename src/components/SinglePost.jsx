@@ -13,6 +13,7 @@ import { handleDeleteComment } from "../services/fetches";
 import { FaTrash } from "react-icons/fa";
 import {  RiUserUnfollowFill, RiUserFollowFill } from "react-icons/ri";
 import { followUser } from "../services/fetches";
+import { checkFollow } from "../services/fetches";
 export default function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -38,13 +39,27 @@ useEffect(() => {
   }
 }, [commentsLength]);
 
-  useEffect(() => {
-    if (post) {
-      setLikesLength(post.likes.length);
-      setCommentsLength(post.comments.length);
-      setLikes(post.likes.some(like => like.user_id === JSON.parse(localStorage.getItem('account2'))?.user?.id));
-    }
-  }, [post]);
+useEffect(() => {
+  if (post) {
+    setLikesLength(post.likes.length);
+    setCommentsLength(post.comments.length);
+
+    const currentUserId =
+      JSON.parse(localStorage.getItem("account2"))?.user?.id;
+
+    setLikes(
+      post.likes.some((like) => like.user_id === currentUserId)
+    );
+
+    checkFollow(post.user_id).then((followData) => {
+      const isFollowing = followData?.some(
+        (f) => f.id === currentUserId
+      );
+
+      setFollow(isFollowing);
+    });
+  }
+}, [post]);
 
   useEffect(() => {    
     if (!post?.comments?.length) return;
@@ -124,17 +139,17 @@ useEffect(() => {
               {follow ? (
                 <RiUserUnfollowFill
                   className="w-4 h-4 text-red-400" 
-                  onClick={() => { 
+                  onClick={(e) => { 
                     setFollow(false);
-                    followUser(false, post.user.id);
+                    followUser(e, false, post.user.id);
                   }} 
                 />
               ) : (
                 <RiUserFollowFill 
                   className="w-4 h-4 text-blue-400" 
-                  onClick={() => { 
+                  onClick={(e) => { 
                     setFollow(true);
-                    followUser(true, post.user.id);
+                    followUser(e, true, post.user.id);
                   }} 
                 
                   

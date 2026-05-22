@@ -151,6 +151,23 @@ export const handleDeleteComment = async (e, commentId) => {
 };
 
 
+export const checkFollow = async ( userId) => {
+  try {
+    const token = localStorage.getItem('token2');
+    const res = await fetch(`http://localhost/public/api/followers/${userId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    console.error("Error checking user:", err);
+    return null;
+  }
+}
+
 export const checkUser = async (userId) => {
   try {
     const token = localStorage.getItem('token2');
@@ -195,9 +212,6 @@ export const checkPremium = async () => {
 };
 
 
-
-
-
 export const disableAccount = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem('token2');
@@ -232,7 +246,8 @@ export const disableAccount = async (e) => {
   }
 };
 
-export const followUser = async (follow, userId) => {
+export const followUser = async (e, follow, userId) => {
+  e.preventDefault();
   const token = localStorage.getItem('token2');
   const accountData = JSON.parse(localStorage.getItem('account2')) || {};
     if (follow){
