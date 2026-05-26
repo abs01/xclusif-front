@@ -340,10 +340,9 @@ export const logout = async () => {
   } catch (err) {
     console.error("Error logging out:", err);
   } finally {
-    // Clear localStorage and redirect after request completes
     localStorage.removeItem('account2');
     localStorage.removeItem('token2');
-    window.location.reload(); // or navigate('/')
+    window.location.reload(); 
   }
 };
 
@@ -393,50 +392,6 @@ export const fetchPosts = async (setPosts, setLoading, setError) => {
     setLoading(false);
   }
 }
-
-
-
-
-
-export const leaveComment = async (postId, commentText, setCommentError, setCommentSuccess) => {
-  const token = localStorage.getItem('token2');
-  const accountData = JSON.parse(localStorage.getItem('account2')) || {};
-  
-  if (!token || !accountData.user) {
-    setCommentError('Debes estar autenticado para comentar');
-    return;
-  }
-
-  try {
-    const res = await fetch(`http://localhost/public/api/posts/${postId}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        content: commentText
-      })
-    });
-
-    if (!res.ok) {
-      const data = await res.json();
-      setCommentError(data.message || 'Error al dejar el comentario');
-      return;
-    }
-
-    const data = await res.json();
-    setCommentSuccess('Comentario añadido exitosamente');
-    return data;
-  } catch (err) {
-    console.error("Error leaving comment:", err);
-    setCommentError('Error de conexión');
-  }
-}
-
-
-
-
 
 
 export const likePost = async (liked, postId, likeId) => {
