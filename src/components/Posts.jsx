@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import CardPosts from "./CardPosts";
-import { fetchPosts } from "../services/fetches";
+import { fetchPosts, fetchFollowingPosts } from "../services/fetches";
 import LoadMore from "./LoadMore";
 import { fetchPostById } from "../services/fetches";
-export default function Posts() {
+
+export default function Posts({ fetchFunction = fetchPosts }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,8 +12,8 @@ export default function Posts() {
   const [indexPosts, setIndexPosts] = useState(8);
   
   useEffect(() => {
-    fetchPosts(setPosts, setLoading, setError);
-  }, []);
+    fetchFunction(setPosts, setLoading, setError);
+  }, [fetchFunction]);
 
   function toggleShowMore() {
   if (!showMore) {

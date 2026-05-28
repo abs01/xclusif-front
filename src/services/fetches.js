@@ -97,6 +97,24 @@ export const handleUpdate = async (e, formData, setStatus) => {
 };
 
 
+export const makeVip = async (e, userId) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token2');
+  try {
+    const res = await fetch(`http://localhost/public/api/followers/${userId}/make-vip`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!res.ok) {
+      console.error("Make VIP failed", res.status);
+    }
+  } catch (err) {
+    console.error("Error making VIP:", err);
+  }
+};
 
 export const handleSubmitComment = async (e, postId, commentText, setCommentSuccess) => {
   e.preventDefault();
@@ -387,6 +405,69 @@ export const fetchPosts = async (setPosts, setLoading, setError) => {
   } catch (err) {
     setError(err.message);
     console.error("Error fetching posts:", err);
+    setPosts([]);
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+export const fetchFollowingPosts = async (setPosts, setLoading, setError) => {
+  try {
+    const token = localStorage.getItem('token2');
+    const accountData = JSON.parse(localStorage.getItem('account2')) || {};
+    
+    if (!accountData.user) {
+      throw new Error('Debes estar autenticado');
+    }
+
+    console.log("Fetching following posts..."); // Debug
+    setLoading(true);
+    setError(null);
+
+    // Get list of followed users
+    const followersResponse = await fetch(`http://localhost/public/api/followers/${accountData.user.id}/following`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!followersResponse.ok) {
+      throw new Error('Error al obtener lista de seguidos');
+    }
+
+    const followersData = await followersResponse.json();
+    const followedIds = followersData.data?.map(f => f.id) || [];
+
+    if (followedIds.length === 0) {
+      setPosts([]);
+      setLoading(false);
+      return;
+    }
+
+    // Get all posts
+    const postsResponse = await fetch("http://localhost/public/api/posts", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!postsResponse.ok) {
+      throw new Error(`Error al obtener posts (status ${postsResponse.status})`);
+    }
+
+    const postsData = await postsResponse.json();
+    let allPosts = postsData.data || postsData || [];
+
+    // Filter posts from followed users
+    const filteredPosts = allPosts.filter(post => followedIds.includes(post.user_id));
+    setPosts(filteredPosts);
+
+  } catch (err) {
+    setError(err.message);
+    console.error("Error fetching following posts:", err);
     setPosts([]);
   } finally {
     setLoading(false);

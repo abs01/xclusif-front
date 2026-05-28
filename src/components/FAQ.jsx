@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 const faqs = [
   { question: "¿Cómo creo una cuenta en Xclusif?", answer: "Haz clic en 'Registrarse', completa el formulario con tus datos personales y confirma tu correo electrónico. ¡Listo! Ya puedes comenzar a compartir con la comunidad." },
-  { question: "¿Mis posts son privados?", answer: "Por defecto, todos los posts son públicos y visibles para cualquier usuario de Xclusif. Puedes gestionar tu privacidad desde la configuración de tu cuenta." },
+  { question: "¿Mis posts son privados?", answer: "Por defecto, todos los posts son públicos y visibles para cualquier usuario de Xclusif." },
   { question: "¿Cómo protejo mi cuenta?", answer: "Usa una contraseña fuerte, no compartas tu contraseña con nadie. También revisa regularmente tu actividad reciente." },
 ];
 
