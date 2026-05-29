@@ -29,6 +29,13 @@ export default function CardPosts({ post,iniLike }) {
           </div>
 
           <p className="text-gray-100 text-sm leading-relaxed break-words">{post.content}</p>
+                  {post.media && (
+            <img
+              src={"http://127.0.0.1:8000/images/" + post.media.file_path}
+              alt="Imagen del post"
+              className="h-auto max-w-lg rounded-sm"
+            />
+          )}
 
           <div className="flex items-center gap-6 mt-2 text-gray-500" onClick={(e) => e.preventDefault()}>
             <button className="flex items-center gap-1.5 text-xs hover:text-blue-400 transition-colors group/btn">
