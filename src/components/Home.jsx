@@ -43,7 +43,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-
+        
+        {/* Fetch function por defecto es fetchPosts, ahora, si el filtro es "following", se usa fetchFollowingPosts */}
         <Posts fetchFunction={filter === "following" ? fetchFollowingPosts : fetchPosts} />
         <Footer />
       </div>

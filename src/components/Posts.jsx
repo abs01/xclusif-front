@@ -4,6 +4,7 @@ import { fetchPosts, fetchFollowingPosts } from "../services/fetches";
 import LoadMore from "./LoadMore";
 import { fetchPostById } from "../services/fetches";
 
+//el = sirve ya que puede recibir tanto la función de fetchPosts como la de fetchFollowingPosts, dependiendo del filtro seleccionado en Home.jsx
 export default function Posts({ fetchFunction = fetchPosts }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +71,9 @@ export default function Posts({ fetchFunction = fetchPosts }) {
         </>
       )
       }
-      <LoadMore showMore={showMore} toggleShowMore={toggleShowMore} />
+      {posts.length > 8 && (
+        <LoadMore showMore={showMore} toggleShowMore={toggleShowMore} />
+      )}
     </main>
   );
 }

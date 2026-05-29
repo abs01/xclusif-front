@@ -170,7 +170,7 @@ export default function SinglePost() {
                       }
                     }}
                   />
-                  <span className="text-sm">Hacer VIP</span>
+                  <span className="text-sm">Hacerme VIP</span>
                 </button>
               </>
             ) : (
