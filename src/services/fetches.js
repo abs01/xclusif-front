@@ -366,7 +366,38 @@ export const logout = async () => {
 
 
 
+export const fetchPublicity = async (setPublicity, setLoading, setError) => {
+  try {
 
+    setLoading(true);
+    setError(null);
+
+    const response = await fetch("http://localhost/public/api/sponsors", {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log("Response status:", response.status); // Debug
+
+
+    const data = await response.json();
+    console.log("Data received:", data); // Debug
+
+    if (data.data) {
+      setPublicity(data.data);
+    } else {
+      console.error("Formato de datos inesperado:", data);
+      setPublicity({});
+    }
+  } catch (err) {
+    setError(err.message);
+    console.error("Error fetching publicity:", err);
+    setPublicity({});
+  } finally {
+    setLoading(false);
+  }
+}
 
 export const fetchPosts = async (setPosts, setLoading, setError) => {
   try {
