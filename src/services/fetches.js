@@ -45,7 +45,6 @@ export const handleSubmitPost = async (e, postContent, imageFile, setPostSuccess
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
-          // No pongas Content-Type aquí, FormData lo gestiona solo
         },
         body: formData
       });
@@ -293,7 +292,6 @@ export const followUser = async (e, follow, userId) => {
         },
       });   
 }};
-// Agrega esta función o actualiza la existente en fetches.js
 
 export const handleSubmit = async (e, setError, navigate, emailOrData, password) => {
     e.preventDefault();
