@@ -185,6 +185,26 @@ export const checkFollow = async ( userId) => {
   }
 }
 
+
+export const checkXcoins = async (setXcoins) => {
+  try {
+    const token = localStorage.getItem('token2');
+    const res = await fetch(`http://localhost/public/api/xcoins`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    const data = await res.json();
+    setXcoins(data.data);
+    return;
+  } catch (err) {
+    console.error("Error checking user:", err);
+    return null;
+  }
+}
+
+
 export const checkUser = async (userId) => {
   try {
     const token = localStorage.getItem('token2');

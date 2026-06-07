@@ -3,12 +3,17 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Posts from "./Posts";
 import { fetchPosts, fetchFollowingPosts } from "../services/fetches";
+import { checkXcoins } from "../services/fetches";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all"); // "all" or "following"
+    const [xcoins, setXcoins] = useState(0); 
 
+    useEffect(() => {
+      checkXcoins(setXcoins);
+    }, []);
   return (
     <div className="min-h-screen bg-black text-white">
       <Header />
@@ -19,6 +24,7 @@ export default function Home() {
         <div className="sticky top-0 lg:top-0 mt-14 lg:mt-0 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-3 z-10">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-black text-white">Inicio</h1>
+              <p className="text-gray-500 text-xs mt-0.5">Tienes {xcoins} Xcoins</p>
             <div className="flex gap-2">
               <button
                 onClick={() => setFilter("all")}
