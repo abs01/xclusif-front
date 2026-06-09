@@ -13,20 +13,19 @@ import Login from './components/Login';
 import SinglePost  from './components/SinglePost';
 import CreatePost from './components/CreatePost';
 function App() {
-  const [account, setAccount] = useState({}); // Estado para guardar los datos de la cuenta
 
   return (
    <Router>
       <Routes>
-        <Route path="/" element={<Home account={account}/>} />
+        <Route path="/" element={<Home />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/login" element={<Login setAccount={setAccount} />} />
-        <Route path="/register" element={<Register setAccount={setAccount} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/FAQ" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/post/:id" element={<SinglePost />} />
         <Route path="/create-post" element={<CreatePost />} />
-        <Route path="*" element={<Home account={account} />} />
+        <Route path="*" element={<Home  />} />
       </Routes>
     </Router>
   )

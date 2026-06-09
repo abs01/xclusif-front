@@ -153,7 +153,7 @@ const confirmDiamond = (e) => {
           </div>
 
           <div className="pt-4 border-t border-gray-800">
-            <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-4">Cambiar contraseña (opcional)</p>
+            <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-4">Confirma contraseña</p>
             <div className="grid grid-cols-2 gap-4">
               <input className={inputClass} placeholder="Nueva contraseña" type="password" name="password" value={formData.password} onChange={(e) => handleChange(e, setFormData, formData)} />
               <input className={inputClass} placeholder="Confirmar" type="password" name="password_confirmation" value={formData.password_confirmation} onChange={(e) => handleChange(e, setFormData, formData)} />
