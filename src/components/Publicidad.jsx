@@ -8,7 +8,7 @@ export default function Publicidad() {
       const [error, setError] = useState(null);
       useEffect(() => {
         fetchPublicity(setPublicity, setLoading, setError);
-      }, [ fetchPublicity]);
+      }, []);
     if (loading) return (
     <div className="bg-gray-800 text-white p-4 rounded-lg text-center animate-pulse">
         <h2 className="text-xl font-bold mb-2">Espacio de Publicidad</h2>
